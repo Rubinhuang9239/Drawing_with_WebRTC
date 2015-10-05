@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+
+    <script src="script/socket.io.js"></script>
+
+    <script>
+    var socket = io();
+    var myToken, myStream;
+    var dataPack = {};
+    var socketReady = false;
+    var testBox;
+
+    window.addEventListener('load',function(){
+        //init
+        setTimeout(function(){
+            myToken = socket.id;
+            socketReady = true;
+
+            //Token_Ready!!_Then_Setup_Socket_KeyWord//
+            socket.on( myToken, function(stream){
+            //alert("hi");
+            testBox.innerHTML += stream;
+            });
+
+        },100);
+
+        testBox = document.getElementById('testBox');
+
+
+    });
+
+    //registration_for_server_position
+    socket.on('testType', function(){
+        socket.emit('newArtist','');
+    });
+
+    //receive_data_stream
+
+    // socket.on( "test", function(stream){
+    //     testBox.innerHTML += stream;
+    // });
+
+
+    document.onkeydown=function(event){
+        if(socketReady){
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                myStream = e.keyCode;
+
+                dataPack = {
+                    token : myToken,
+                    stream : myStream
+                }
+
+                socket.emit('frame', dataPack);
+
+                console.log(dataPack);
+
+            }
+        }; 
+    
+    </script>
+
+</head>
+<body>
+
+<!--div>
+You Can Remove "testBox" div After Testing
+For Testing: Type AnyTing Runtime
+Rubin
+<div-->
+
+<div id = "testBox" >
+</div>
+
+Front-ends.<br />
+! Teresa's HTML goes here ^_^ !
+
+</body>
+
+</html>
